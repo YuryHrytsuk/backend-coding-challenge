@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+
+  backend:
+    depends_on:
+      - migrations
+    build:
+      context: .
+    volumes:
+      - ./aspaara:/app/aspaara
+      - ./test.db:/test.db
+    ports:
+      - '8000:8000'
+
+  migrations:
+    build:
+      context: .
+    volumes:
+      - ./planning.json:/data/planning.json
+      - ./aspaara:/app/aspaara
+      - ./migrations.py:/app/migrations.py
+      - ./test.db:/test.db
+    command:
+      - python
+      - migrations.py
